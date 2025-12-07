@@ -1,6 +1,6 @@
 # Cancel Workflows Action
 
-A GitHub Action to cancel running or queued workflows for a branch or PR. Useful for cleaning up workflows when a PR is closed.
+A GitHub Action to cancel running or queued workflows for a branch or PR. Useful for cleaning up workflows when a PR is closed or when using `workflow_dispatch` triggers.
 
 ## Usage
 
@@ -114,6 +114,22 @@ The action determines which branch to cancel workflows for in this order:
 2. `pr-number` input (looks up the PR's head branch)
 3. `github.context.payload.pull_request.head.ref` (from PR event context)
 
-## License
+## Comparison with styfle/cancel-workflow-action
 
-MIT
+This action differs from [styfle/cancel-workflow-action](https://github.com/styfle/cancel-workflow-action) in several ways:
+
+| Feature | This action | styfle/cancel-workflow-action |
+|---------|-------------|-------------------------------|
+| PR number lookup | Yes - resolves branch from PR number | No |
+| Explicit branch input | Yes | No |
+| Workflow name filtering | Yes | No (uses workflow IDs) |
+| Cancel previous runs of same workflow | No | Yes (primary use case) |
+
+**When to use each:**
+
+- **Use `styfle/cancel-workflow-action`** for standard "cancel previous runs" scenarios - when you want to cancel older runs of the same workflow on push/PR events
+- **Use this action** when you need to:
+  - Cancel workflows from a `workflow_dispatch` trigger using a PR number
+  - Cancel workflows for an explicit branch name
+  - Filter cancellation by workflow names
+  - Cancel workflows across repositories
