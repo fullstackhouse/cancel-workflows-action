@@ -67,15 +67,40 @@ jobs:
 |--------|-------------|
 | `cancelled-count` | Number of workflow runs cancelled |
 
-## Permissions
+## Token & Permissions
 
-This action requires the following permissions:
+### Using `github.token` (Recommended)
+
+The default `github.token` works for most cases. Add these permissions to your job:
 
 ```yaml
 permissions:
   actions: write       # Required to cancel workflows
   pull-requests: read  # Required if using pr-number input
 ```
+
+### Using a Personal Access Token (PAT)
+
+A PAT is needed when:
+- Cancelling workflows in a different repository
+- Working around `github.token` scope limitations
+
+**Fine-grained PAT requirements:**
+| Permission | Access | Required For |
+|------------|--------|--------------|
+| Actions | Read and write | Cancelling workflow runs |
+| Pull requests | Read | Looking up PR branch (if using `pr-number`) |
+| Metadata | Read | Automatically included |
+
+**Classic PAT requirements:**
+- `repo` scope (full control of private repositories)
+- Or `public_repo` scope (for public repositories only)
+
+### Token Scope Limitations
+
+The `github.token` is scoped to the repository where the workflow runs. It cannot:
+- Cancel workflows in other repositories
+- Cancel workflows triggered by a different token with elevated permissions
 
 ## Branch Resolution
 
