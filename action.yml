@@ -1,0 +1,37 @@
+name: Cancel Workflows
+description: Cancel running or queued GitHub Actions workflows for a branch or PR
+author: Full Stack House
+
+branding:
+  icon: x-circle
+  color: red
+
+inputs:
+  token:
+    description: GitHub token with actions:write permission
+    required: true
+  branch:
+    description: Branch to cancel workflows for
+    required: false
+  pr-number:
+    description: PR number (used to lookup branch if not provided)
+    required: false
+  repository:
+    description: Target repository (owner/repo)
+    required: false
+    default: ${{ github.repository }}
+  workflows:
+    description: Comma-separated workflow names to cancel (empty = all)
+    required: false
+  statuses:
+    description: Comma-separated statuses to cancel
+    required: false
+    default: in_progress,queued
+
+outputs:
+  cancelled-count:
+    description: Number of workflow runs cancelled
+
+runs:
+  using: node20
+  main: dist/index.js
