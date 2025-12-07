@@ -102,6 +102,10 @@ The `github.token` is scoped to the repository where the workflow runs. It canno
 - Cancel workflows in other repositories
 - Cancel workflows triggered by a different token with elevated permissions
 
+## Self-Exclusion
+
+The action automatically excludes the currently running workflow from cancellation. This prevents the action from cancelling itself.
+
 ## Branch Resolution
 
 The action determines which branch to cancel workflows for in this order:
